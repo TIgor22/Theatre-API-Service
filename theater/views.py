@@ -4,6 +4,7 @@ from theater.models import (
     Genre,
     Actor,
     Play,
+    TheatreHall,
 )
 from theater.serializers import (
     GenreSerializer,
@@ -11,6 +12,7 @@ from theater.serializers import (
     PlaySerializer,
     PlayListSerializer,
     PlayRetrieveSerializer,
+    TheatreHallSerializer,
 )
 
 
@@ -41,3 +43,8 @@ class PlayViewSet(viewsets.ModelViewSet):
             queryset = queryset.prefetch_related("genres", "actors")
 
         return queryset
+
+
+class TheatreHallViewSet(viewsets.ModelViewSet):
+    queryset = TheatreHall.objects.all()
+    serializer_class = TheatreHallSerializer
