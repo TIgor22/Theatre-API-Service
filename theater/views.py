@@ -34,3 +34,10 @@ class PlayViewSet(viewsets.ModelViewSet):
             return PlayRetrieveSerializer
 
         return PlaySerializer
+
+    def get_queryset(self):
+        queryset = self.queryset
+        if self.action in ("list", "retrieve"):
+            queryset = queryset.prefetch_related("genres", "actors")
+
+        return queryset
