@@ -37,6 +37,11 @@ class ActorViewSet(viewsets.ModelViewSet):
 class PlayViewSet(viewsets.ModelViewSet):
     queryset = Play.objects.all()
 
+    @staticmethod
+    def _params_to_ints(query_string):
+        """Converts a string of format '1,2,3' to a list of integers [1, 2, 3]."""
+        return [int(str_id) for str_id in query_string.split(",")]
+
     def get_serializer_class(self):
         if self.action == "list":
             return PlayListSerializer
@@ -47,10 +52,22 @@ class PlayViewSet(viewsets.ModelViewSet):
 
     def get_queryset(self):
         queryset = self.queryset
+
+        genres = self.request.query_params.get("genres")
+        actors = self.request.query_params.get("actors")
+
+        if genres:
+            genres = self._params_to_ints(genres)
+            queryset = queryset.filter(genres__id__in=genres)
+
+        if actors:
+            actors = self._params_to_ints(actors)
+            queryset = queryset.filter(actors__id__in=actors)
+
         if self.action in ("list", "retrieve"):
             queryset = queryset.prefetch_related("genres", "actors")
 
-        return queryset
+        return queryset.distinct()
 
 
 class TheatreHallViewSet(viewsets.ModelViewSet):
@@ -71,10 +88,15 @@ class PerformanceViewSet(viewsets.ModelViewSet):
 
     def get_queryset(self):
         queryset = self.queryset
+        play = self.request.query_params.get("play")
+
+        if play:
+            queryset = queryset.filter(play__title__icontains=play)
+
         if self.action in ("list", "retrieve"):
             queryset = queryset.select_related("play", "theatre_hall")
 
-        return queryset
+        return queryset.distinct()
 
 
 class ReservationViewSet(viewsets.ModelViewSet):
