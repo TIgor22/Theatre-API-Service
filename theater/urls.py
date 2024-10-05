@@ -4,7 +4,9 @@ from rest_framework import routers
 from theater.views import (
     GenreViewSet,
     ActorViewSet,
-    PlayViewSet, TheatreHallViewSet,
+    PlayViewSet,
+    TheatreHallViewSet,
+    PerformanceViewSet,
 )
 
 
@@ -16,6 +18,11 @@ router.register(
     "theatre-halls",
     TheatreHallViewSet,
     basename="theatre-halls"
+)
+router.register(
+    "performances",
+    PerformanceViewSet,
+    basename="performances"
 )
 
 urlpatterns = [

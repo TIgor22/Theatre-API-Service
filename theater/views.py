@@ -5,6 +5,7 @@ from theater.models import (
     Actor,
     Play,
     TheatreHall,
+    Performance,
 )
 from theater.serializers import (
     GenreSerializer,
@@ -13,6 +14,7 @@ from theater.serializers import (
     PlayListSerializer,
     PlayRetrieveSerializer,
     TheatreHallSerializer,
+    PerformanceSerializer,
 )
 
 
@@ -48,3 +50,8 @@ class PlayViewSet(viewsets.ModelViewSet):
 class TheatreHallViewSet(viewsets.ModelViewSet):
     queryset = TheatreHall.objects.all()
     serializer_class = TheatreHallSerializer
+
+
+class PerformanceViewSet(viewsets.ModelViewSet):
+    queryset = Performance.objects.all()
+    serializer_class = PerformanceSerializer
