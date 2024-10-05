@@ -67,11 +67,11 @@ class Ticket(models.Model):
 
     @staticmethod
     def ticket_validate(row: int, seat: int, rows_in_hall, seats_in_row: int, error):
-        if not (1 < row < rows_in_hall):
+        if not (1 <= row <= rows_in_hall):
             raise error(
                 {"row": f"Row must be in range [1, {rows_in_hall}], not {row}."}
             )
-        if not (1 < seat < seats_in_row):
+        if not (1 <= seat <= seats_in_row):
             raise error(
                 {"seat": f"Seat must be in range [1, {seats_in_row}], not {seat}"}
             )
@@ -101,4 +101,4 @@ class Reservation(models.Model):
     )
 
     def __str__(self):
-        return self.created_at
+        return f"{self.created_at}"

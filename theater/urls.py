@@ -6,7 +6,7 @@ from theater.views import (
     ActorViewSet,
     PlayViewSet,
     TheatreHallViewSet,
-    PerformanceViewSet,
+    PerformanceViewSet, ReservationViewSet,
 )
 
 
@@ -23,6 +23,11 @@ router.register(
     "performances",
     PerformanceViewSet,
     basename="performances"
+)
+router.register(
+    "reservations",
+    ReservationViewSet,
+    basename="reservations"
 )
 
 urlpatterns = [

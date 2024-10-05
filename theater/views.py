@@ -6,6 +6,7 @@ from theater.models import (
     Play,
     TheatreHall,
     Performance,
+    Reservation,
 )
 from theater.serializers import (
     GenreSerializer,
@@ -17,6 +18,9 @@ from theater.serializers import (
     PerformanceSerializer,
     PerformanceListSerializer,
     PerformanceRetrieveSerializer,
+    ReservationSerializer,
+    ReservationListSerializer,
+    ReservationRetrieveSerializer,
 )
 
 
@@ -71,3 +75,24 @@ class PerformanceViewSet(viewsets.ModelViewSet):
             queryset = queryset.select_related("play", "theatre_hall")
 
         return queryset
+
+
+class ReservationViewSet(viewsets.ModelViewSet):
+    queryset = Reservation.objects.all()
+    serializer_class = ReservationSerializer
+
+    def perform_create(self, serializer):
+        serializer.save(user=self.request.user)
+
+    def get_queryset(self):
+        queryset = self.queryset.filter(user=self.request.user)
+
+        return queryset
+
+    def get_serializer_class(self):
+        if self.action == "list":
+            return ReservationListSerializer
+        elif self.action == "retrieve":
+            return ReservationRetrieveSerializer
+
+        return ReservationSerializer
