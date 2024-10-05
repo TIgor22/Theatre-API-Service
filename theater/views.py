@@ -87,6 +87,12 @@ class ReservationViewSet(viewsets.ModelViewSet):
     def get_queryset(self):
         queryset = self.queryset.filter(user=self.request.user)
 
+        if self.action in ("list", "retrieve"):
+            queryset = queryset.prefetch_related(
+                "tickets__performance__play",
+                "tickets__performance__theatre_hall"
+            )
+
         return queryset
 
     def get_serializer_class(self):
