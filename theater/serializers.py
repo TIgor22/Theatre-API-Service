@@ -48,3 +48,10 @@ class PlayListSerializer(PlaySerializer):
 class PlayRetrieveSerializer(PlaySerializer):
     genres = GenreSerializer(many=True, read_only=True)
     actors = ActorSerializer(many=True, read_only=True)
+
+
+class TheatreHallSerializer(serializers.ModelSerializer):
+
+    class Meta:
+        model = TheatreHall
+        fields = ("id", "name", "rows", "seats_in_row")
