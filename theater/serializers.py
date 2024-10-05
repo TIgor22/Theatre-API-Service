@@ -62,3 +62,21 @@ class PerformanceSerializer(serializers.ModelSerializer):
     class Meta:
         model = Performance
         fields = ("id", "play", "theatre_hall", "show_time")
+
+
+class PerformanceListSerializer(PerformanceSerializer):
+    play = serializers.SlugRelatedField(
+        many=False,
+        read_only=True,
+        slug_field="title"
+    )
+    theatre_hall = serializers.SlugRelatedField(
+        many=False,
+        read_only=True,
+        slug_field="name"
+    )
+
+
+class PerformanceRetrieveSerializer(PerformanceSerializer):
+    play = PlayRetrieveSerializer(many=False, read_only=True)
+    theatre_hall = TheatreHallSerializer(many=False, read_only=True)
