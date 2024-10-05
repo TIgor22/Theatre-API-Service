@@ -64,3 +64,10 @@ class PerformanceViewSet(viewsets.ModelViewSet):
             return PerformanceRetrieveSerializer
 
         return PerformanceSerializer
+
+    def get_queryset(self):
+        queryset = self.queryset
+        if self.action in ("list", "retrieve"):
+            queryset = queryset.select_related("play", "theatre_hall")
+
+        return queryset
