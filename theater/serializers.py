@@ -51,6 +51,13 @@ class PlayRetrieveSerializer(PlaySerializer):
     actors = ActorSerializer(many=True, read_only=True)
 
 
+class ItemImageSerializer(serializers.ModelSerializer):
+
+    class Meta:
+        model = Play
+        fields = ("id", "image")
+
+
 class TheatreHallSerializer(serializers.ModelSerializer):
 
     class Meta:
