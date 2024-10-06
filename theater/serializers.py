@@ -78,11 +78,6 @@ class PerformanceListSerializer(PerformanceSerializer):
     )
 
 
-class PerformanceRetrieveSerializer(PerformanceSerializer):
-    play = PlayRetrieveSerializer(many=False, read_only=True)
-    theatre_hall = TheatreHallSerializer(many=False, read_only=True)
-
-
 class TicketSerializer(serializers.ModelSerializer):
 
     class Meta:
@@ -105,8 +100,25 @@ class TicketListSerializer(TicketSerializer):
     performance = PerformanceListSerializer(read_only=True)
 
 
-class TicketRetrieveSerializer(TicketSerializer):
-    performance = PerformanceRetrieveSerializer(many=False, read_only=True)
+class TakenSeatsInRowSerializer(TicketSerializer):
+
+    class Meta:
+        model = Ticket
+        fields = ("row", "seat")
+
+
+class PerformanceRetrieveSerializer(PerformanceSerializer):
+    play = PlayRetrieveSerializer(many=False, read_only=True)
+    theatre_hall = TheatreHallSerializer(many=False, read_only=True)
+    taken_seats = TakenSeatsInRowSerializer(
+        many=True,
+        read_only=True,
+        source="tickets"
+    )
+
+    class Meta:
+        model = Performance
+        fields = ("id", "play", "theatre_hall", "show_time", "taken_seats")
 
 
 class ReservationSerializer(serializers.ModelSerializer):
@@ -127,7 +139,3 @@ class ReservationSerializer(serializers.ModelSerializer):
 
 class ReservationListSerializer(ReservationSerializer):
     tickets = TicketListSerializer(many=True, read_only=True)
-
-
-class ReservationRetrieveSerializer(ReservationSerializer):
-    tickets = TicketRetrieveSerializer(many=True, read_only=True)
