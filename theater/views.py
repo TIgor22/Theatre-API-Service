@@ -1,3 +1,4 @@
+from django.db.models import F, Count
 from rest_framework import viewsets
 
 from theater.models import (
@@ -92,7 +93,17 @@ class PerformanceViewSet(viewsets.ModelViewSet):
         if play:
             queryset = queryset.filter(play__title__icontains=play)
 
-        if self.action in ("list", "retrieve"):
+        if self.action == "list":
+            queryset = (
+                queryset.select_related("play", "theatre_hall")
+                .annotate(
+                    tickets_available=F("theatre_hall__rows")
+                                      * F("theatre_hall__seats_in_row")
+                                      - Count("tickets")
+                )
+            ).order_by("id")
+
+        if self.action == "retrieve":
             queryset = queryset.select_related("play", "theatre_hall")
 
         return queryset.distinct()
