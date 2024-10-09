@@ -1,4 +1,5 @@
 from django.db.models import F, Count
+from drf_spectacular.utils import extend_schema, OpenApiParameter
 from rest_framework import viewsets, status
 from rest_framework.decorators import action
 from rest_framework.response import Response
@@ -85,6 +86,24 @@ class PlayViewSet(viewsets.ModelViewSet):
 
         return Response(serializer.errors, status=status.HTTP_400_BAD_REQUEST)
 
+    @extend_schema(
+        parameters=[
+            OpenApiParameter(
+                "actors",
+                type={"type": "array", "items": {"type": "number"}},
+                description="Filter by actors id (ex. ?actors=2,3)"
+            ),
+            OpenApiParameter(
+                "genres",
+                type={"type": "array", "items": {"type": "number"}},
+                description="Filter by genres id (ex. ?genres=1,3)"
+            )
+        ]
+    )
+    def list(self, request, *args, **kwargs):
+        """Get list of plays."""
+        return super().list(request, *args, **kwargs)
+
 
 class TheatreHallViewSet(viewsets.ModelViewSet):
     queryset = TheatreHall.objects.all()
@@ -123,6 +142,19 @@ class PerformanceViewSet(viewsets.ModelViewSet):
             queryset = queryset.select_related("play", "theatre_hall")
 
         return queryset.distinct()
+
+    @extend_schema(
+        parameters=[
+            OpenApiParameter(
+                "play",
+                type={"type": "string"},
+                description="Filter by play title (ex. ?play=titanic)"
+            )
+        ]
+    )
+    def list(self, request, *args, **kwargs):
+        """Get list of performances"""
+        return super().list(request, *args, **kwargs)
 
 
 class ReservationViewSet(viewsets.ModelViewSet):
