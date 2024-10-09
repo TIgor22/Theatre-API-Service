@@ -26,7 +26,8 @@ class Actor(models.Model):
 
 
 def play_image_path(instance: "Play", filename: str) -> pathlib.Path:
-    filename = f"{slugify(instance.title)}-{uuid.uuid4()}" + pathlib.Path(filename).suffix
+    filename = (f"{slugify(instance.title)}-"
+                f"{uuid.uuid4()}") + pathlib.Path(filename).suffix
     return pathlib.Path("upload/plays") / pathlib.Path(filename)
 
 
@@ -47,25 +48,39 @@ class TheatreHall(models.Model):
     seats_in_row = models.IntegerField()
 
     def __str__(self):
-        return f"Hall: {self.name}, rows: {self.rows}, seats in row: {self.seats_in_row}"
+        return (f"Hall: {self.name}, rows: {self.rows}, "
+                f"seats in row: {self.seats_in_row}")
 
 
 class Performance(models.Model):
-    play = models.ForeignKey(Play, on_delete=models.CASCADE, related_name="performances")
+    play = models.ForeignKey(
+        Play,
+        on_delete=models.CASCADE,
+        related_name="performances"
+    )
     theatre_hall = models.ForeignKey(
         TheatreHall, on_delete=models.CASCADE, related_name="performances"
     )
     show_time = models.DateTimeField()
 
     def __str__(self):
-        return f"Play: {self.play.title}, theatre hall: {self.theatre_hall.name}"
+        return (f"Play: {self.play.title}, "
+                f"theatre hall: {self.theatre_hall.name}")
 
 
 class Ticket(models.Model):
     row = models.IntegerField()
     seat = models.IntegerField()
-    performance = models.ForeignKey(Performance, on_delete=models.CASCADE, related_name="tickets")
-    reservation = models.ForeignKey("Reservation", on_delete=models.CASCADE, related_name="tickets")
+    performance = models.ForeignKey(
+        Performance,
+        on_delete=models.CASCADE,
+        related_name="tickets"
+    )
+    reservation = models.ForeignKey(
+        "Reservation",
+        on_delete=models.CASCADE,
+        related_name="tickets"
+    )
 
     class Meta:
         unique_together = ("row", "seat", "performance")
@@ -76,14 +91,22 @@ class Ticket(models.Model):
                 f"Row: {self.row}, seat: {self.seat}.")
 
     @staticmethod
-    def ticket_validate(row: int, seat: int, rows_in_hall, seats_in_row: int, error):
+    def ticket_validate(
+            row: int, seat: int, rows_in_hall, seats_in_row: int, error
+    ):
         if not (1 <= row <= rows_in_hall):
             raise error(
-                {"row": f"Row must be in range [1, {rows_in_hall}], not {row}."}
+                {
+                    "row": f"Row must be in range "
+                           f"[1, {rows_in_hall}], not {row}."
+                }
             )
         if not (1 <= seat <= seats_in_row):
             raise error(
-                {"seat": f"Seat must be in range [1, {seats_in_row}], not {seat}"}
+                {
+                    "seat": f"Seat must be in range "
+                            f"[1, {seats_in_row}], not {seat}"
+                }
             )
 
     def clean(self):
@@ -96,10 +119,16 @@ class Ticket(models.Model):
         )
 
     def save(
-        self, force_insert=False, force_update=False, using=None, update_fields=None
+        self,
+        force_insert=False,
+        force_update=False,
+        using=None,
+        update_fields=None
     ):
         self.full_clean()
-        return super(Ticket, self).save(force_insert, force_update, using, update_fields)
+        return super(Ticket, self).save(
+            force_insert, force_update, using, update_fields
+        )
 
 
 class Reservation(models.Model):

@@ -43,7 +43,9 @@ class PlayViewSet(viewsets.ModelViewSet):
 
     @staticmethod
     def _params_to_ints(query_string):
-        """Converts a string of format '1,2,3' to a list of integers [1, 2, 3]."""
+        """
+        Converts a string of format '1,2,3' to a list of integers [1, 2, 3].
+        """
         return [int(str_id) for str_id in query_string.split(",")]
 
     def get_serializer_class(self):
@@ -133,8 +135,8 @@ class PerformanceViewSet(viewsets.ModelViewSet):
                 queryset.select_related("play", "theatre_hall")
                 .annotate(
                     tickets_available=F("theatre_hall__rows")
-                                      * F("theatre_hall__seats_in_row")
-                                      - Count("tickets")
+                    * F("theatre_hall__seats_in_row")
+                    - Count("tickets")
                 )
             ).order_by("id")
 

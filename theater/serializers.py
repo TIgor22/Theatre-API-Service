@@ -87,7 +87,13 @@ class PerformanceListSerializer(PerformanceSerializer):
 
     class Meta:
         model = Performance
-        fields = ("id", "play", "theatre_hall", "show_time", "tickets_available")
+        fields = (
+            "id",
+            "play",
+            "theatre_hall",
+            "show_time",
+            "tickets_available"
+        )
 
 
 class TicketSerializer(serializers.ModelSerializer):
@@ -138,7 +144,7 @@ class ReservationSerializer(serializers.ModelSerializer):
 
     class Meta:
         model = Reservation
-        fields = ("id","created_at", "tickets")
+        fields = ("id", "created_at", "tickets")
 
     @transaction.atomic
     def create(self, validated_data):
