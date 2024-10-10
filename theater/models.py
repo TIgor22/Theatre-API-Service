@@ -34,8 +34,8 @@ def play_image_path(instance: "Play", filename: str) -> pathlib.Path:
 class Play(models.Model):
     title = models.CharField(max_length=255)
     description = models.TextField()
-    genres = models.ManyToManyField(Genre, related_name="plays")
-    actors = models.ManyToManyField(Actor, related_name="plays")
+    genres = models.ManyToManyField(Genre, related_name="plays", blank=True)
+    actors = models.ManyToManyField(Actor, related_name="plays", blank=True)
     image = models.ImageField(null=True, upload_to=play_image_path)
 
     def __str__(self):
