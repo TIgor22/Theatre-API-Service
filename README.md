@@ -69,19 +69,19 @@ docker-compose up
 
 ## Demo
 
-    ![Models diagram](pictures/theater_diagram.png)
+![Models diagram](pictures/theater_diagram.png)
 
 ### Screenshots
 
-    ![Screenshot 1](pictures/1.png)
-    ![Screenshot 2](pictures/2.png)
-    ![Screenshot 3](pictures/3.png)
-    ![Screenshot 4](pictures/4.png)
-    ![Screenshot 5](pictures/5.png)
-    ![Screenshot 6](pictures/6.png)
-    ![Screenshot 7](pictures/7.png)
-    ![Screenshot 8](pictures/8.png)
-    ![Screenshot 9](pictures/9.png)
-    ![Screenshot 10](pictures/10.png)
-    ![Screenshot 11](pictures/11.png)
-    ![Screenshot 12](pictures/12.png)
+![Screenshot 1](pictures/1.png)
+![Screenshot 2](pictures/2.png)
+![Screenshot 3](pictures/3.png)
+![Screenshot 4](pictures/4.png)
+![Screenshot 5](pictures/5.png)
+![Screenshot 6](pictures/6.png)
+![Screenshot 7](pictures/7.png)
+![Screenshot 8](pictures/8.png)
+![Screenshot 9](pictures/9.png)
+![Screenshot 10](pictures/10.png)
+![Screenshot 11](pictures/11.png)
+![Screenshot 12](pictures/12.png)
